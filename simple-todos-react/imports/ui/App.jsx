@@ -9,6 +9,16 @@ export const App = () => {
     TasksCollection.find({}, { sort: { createdAt: -1 } }).fetch()
   );
 
+  const toggleChecked = ({_id, isChecked}) => {
+    TasksCollection.update(_id, {
+      $set: {
+        isChecked: !isChecked
+      }
+    })
+  }
+
+  const deleteTask = ({_id}) => TasksCollection.remove(_id);
+  
   return (
     <div>
       <h1>Welcome to Meteor!</h1>
@@ -17,7 +27,7 @@ export const App = () => {
 
       <ul>
         {tasks.map(task => (
-          <Task key={task._id} task={task} />
+          <Task key={task._id} task={task} onCheckboxClick={toggleChecked} onDeleteClick={deleteTask}/>
         ))}
       </ul>
     </div>
